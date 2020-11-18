@@ -44,7 +44,7 @@ export default {
         if (valid) {
           try {
             await this.$store.dispatch('onLogin', this.formData)
-            this.getMenuData()
+            this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
             this.loading = false
           } catch (error) {
             this.loading = false

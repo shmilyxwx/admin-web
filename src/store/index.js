@@ -1,11 +1,28 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import Vue from 'vue'
+import Vuex from 'vuex'
+import vuexModules from './modules'
+import getters from './getters'
+import createPersistedState from 'vuex-persistedstate'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
-export default new Vuex.Store({
-  state: {},
-  mutations: {},
-  actions: {},
-  modules: {}
-});
+const store = new Vuex.Store({
+  modules: vuexModules,
+  getters,
+  plugins: [
+    createPersistedState({
+      reducer(val) {
+        return {
+          user: {
+            token: val.user.token,
+            userInfo: val.user.userInfo,
+            permision: val.menu.permision
+          },
+          menuNames: val.menu.menuNames
+        }
+      }
+    })
+  ]
+})
+
+export default store

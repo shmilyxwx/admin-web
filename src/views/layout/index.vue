@@ -23,7 +23,7 @@
     <Layout style="background:#f9f8ff">
       <Header :class="['i-layout-header-' + $config.theme['header_theme'], 'i-layout-header']">
         <span class="trigger" style="position:relative;top:6px;" @click="collapsedSider">
-          <s-icon :name="isCollapsed ? 'menu_open' : 'menu_close'" scale="2.5" />
+          <s-icon :icon-class="isCollapsed ? 'menu_open' : 'menu_close'" scale="2.5" />
         </span>
         <div class="i-layout-header-right">
           <!-- 全屏 -->

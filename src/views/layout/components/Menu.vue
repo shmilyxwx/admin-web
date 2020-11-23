@@ -11,7 +11,9 @@
     <div v-show="isCollapsed" style="width:70px">
       <Dropdown v-for="(item, index) in menus" :key="index" class="i-layout-sider-collapse" placement="right-start" @on-click="onSelect">
         <MenuItem :name="item.name">
-          <i class="icon"><s-icon :name="item.icon || 'fa-menu-3'" scale="1.5" /></i>
+          <i class="icon">
+            <s-icon :icon-class="item.icon || 'fa-menu-3'" scale="1.5" />
+          </i>
         </MenuItem>
         <DropdownMenu v-if="item.child && item.child.length" slot="list">
           <DropdownItem v-for="(child,key) in item.child" :key="key" :selected="activeName === child.name" :name="child.name">{{ child.title }}</DropdownItem>
@@ -22,7 +24,9 @@
       <template v-for="(item,index) in menus">
         <Submenu v-if="item.child && item.child.length" :key="index" :name="item.name">
           <template slot="title">
-            <i class="icon"><s-icon :name="item.icon || 'fa-menu-3'" scale="1.5" /></i>
+            <i class="icon">
+              <s-icon :icon-class="item.icon || 'fa-menu-3'" scale="1.5" />
+            </i>
             <span>{{ item.title }}</span>
           </template>
           <template v-for="(child,index) in item.child">
@@ -34,7 +38,9 @@
           </template>
         </Submenu>
         <MenuItem v-else :key="index" :name="item.name">
-          <i class="icon"><s-icon :name="item.icon || 'fa-menu-3'" scale="1.5" /></i>
+          <i class="icon">
+            <s-icon :icon-class="item.icon || 'fa-menu-3'" scale="1.5" />
+          </i>
           <span>{{ item.title }}</span>
         </MenuItem>
       </template>

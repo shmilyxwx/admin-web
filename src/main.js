@@ -7,11 +7,26 @@ import 'normalize.css/normalize.css'
 import 'nprogress/nprogress.css'
 import '@/theme/index.less'
 import '@/components/index.js'
+import config from '@/config'
+import '@/icons/index.js'
+import moment from 'moment'
+// 引入 v-charts
+import VCharts from 'v-charts'
+Vue.use(VCharts)
 Vue.use(ViewUI, {
   transfer: true
 })
 Vue.config.productionTip = false
-
+Vue.prototype.$config = config
+// 全局配置日期格式化
+Vue.prototype.$fmtMoment = (date, format, isDay = false) => {
+  if (date) {
+    return moment(date).format(format || 'YYYY-MM-DD HH:mm:ss')
+  }
+  return null
+}
+// 全局注册中间件传值
+Vue.prototype.$bus = new Vue()
 new Vue({
   router,
   store,

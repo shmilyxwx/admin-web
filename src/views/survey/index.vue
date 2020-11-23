@@ -6,30 +6,36 @@
  * @Description: 概况
  -->
 <template>
-  <div class="wrap monitor" ref="page">
+  <div ref="page" class="wrap monitor">
     <div class="tab">
       <div style="flex:1">
-        <RadioGroup v-model="typeIndex" type="button" @on-change='typeChange'>
-          <Radio v-for="(tab, index) in tabTypes" :key="index" :label="index">{{tab.title}}</Radio>
+        <RadioGroup v-model="typeIndex" type="button" @on-change="typeChange">
+          <Radio v-for="(tab, index) in tabTypes" :key="index" :label="index">{{ tab.title }}</Radio>
         </RadioGroup>
       </div>
-      <div class="search" slot="extra">
-        <DatePicker type="date" v-model="time_start" placeholder="选择开始日期" :options="startOptions" :clearable="false" @on-change="(e) => changeValue('time_start', e)" style="width: 200px"></DatePicker>
+      <div slot="extra" class="search">
+        <DatePicker v-model="time_start" type="date" placeholder="选择开始日期" :options="startOptions" :clearable="false" style="width: 200px" @on-change="(e) => changeValue('time_start', e)" />
         <span style="margin: 0 10px">至</span>
-        <DatePicker type="date" v-model="time_end" placeholder="选择截止日期" :options="endOptions" :clearable="false" @on-change="(e) => changeValue('time_end', e)" style="width: 200px"></DatePicker>
-        <Button type="primary" @click="handleFilter" style="margin-left:20px">查询</Button>
+        <DatePicker v-model="time_end" type="date" placeholder="选择截止日期" :options="endOptions" :clearable="false" style="width: 200px" @on-change="(e) => changeValue('time_end', e)" />
+        <Button type="primary" style="margin-left:20px" @click="handleFilter">查询</Button>
       </div>
     </div>
-    <components ref="view" v-if="showComponents" :is="isComponent"></components>
+    <components :is="isComponent" v-if="showComponents" ref="view" />
   </div>
 </template>
 <script>
-import userData from './components/userData';
-import squareData from './components/squareData';
-import rechargeData from './components/rechargeData';
-import channelData from './components/channelData';
-const nowDate = new Date();
+import userData from './components/userData'
+import squareData from './components/squareData'
+import rechargeData from './components/rechargeData'
+import channelData from './components/channelData'
+const nowDate = new Date()
 export default {
+  components: {
+    userData,
+    squareData,
+    rechargeData,
+    channelData
+  },
   data() {
     return {
       time_start: this.$fmtMoment(new Date().setTime(nowDate.getTime() - 3600 * 1000 * 24 * 7), 'YYYY-MM-DD'),
@@ -52,67 +58,61 @@ export default {
       typeIndex: 0,
       isComponent: 'userData',
       showComponents: true
-    };
-  },
-  components: {
-    userData,
-    squareData,
-    rechargeData,
-    channelData
+    }
   },
   computed: {
     time_start_send() {
-      return this.$fmtMoment(this.time_start, 'YYYY-MM-DD');
+      return this.$fmtMoment(this.time_start, 'YYYY-MM-DD')
     },
     time_end_send() {
-      return this.$fmtMoment(this.time_end, 'YYYY-MM-DD');
+      return this.$fmtMoment(this.time_end, 'YYYY-MM-DD')
     },
     startOptions() {
       return {
         disabledDate: (date) => {
-          return date && (date.valueOf() > Date.now() - 86400000 || date.valueOf() < new Date(this.time_end) - 86400000 * 60 || date.valueOf() > new Date(this.time_end));
+          return date && (date.valueOf() > Date.now() - 86400000 || date.valueOf() < new Date(this.time_end) - 86400000 * 60 || date.valueOf() > new Date(this.time_end))
         }
-      };
+      }
     },
     endOptions() {
       return {
         disabledDate: (date) => {
-          return date && (date.valueOf() > Date.now() || date.valueOf() < new Date(this.time_start));
+          return date && (date.valueOf() > Date.now() || date.valueOf() < new Date(this.time_start))
         }
-      };
+      }
     }
   },
   mounted() {
     this.$refs.view.getData({
       time_start: this.time_start_send,
       time_end: this.time_end_send
-    });
+    })
   },
   methods: {
     typeChange(index) {
-      this.isComponent = this.tabTypes[index].value;
+      this.isComponent = this.tabTypes[index].value
       setTimeout(() => {
         this.$refs.view.getData({
           time_start: this.time_start_send,
           time_end: this.time_end_send
-        });
-      }, 100);
+        })
+      }, 100)
     },
     // 搜索
     handleFilter() {
       this.$refs.view.getData({
         time_start: this.time_start_send,
         time_end: this.time_end_send
-      });
+      })
     },
     // 修改值
     changeValue(key, value) {
       if (value) {
-        this[key] = value;
+        this[key] = value
       }
     }
   }
-};
+}
 </script>
 
 <style lang="less">

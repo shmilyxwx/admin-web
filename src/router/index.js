@@ -18,45 +18,62 @@ const routes = [
     path: '*',
     redirect: '/login'
   },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }, ...asyncRoutes
+  ...asyncRoutes
 ]
 const router = new VueRouter({
+  mode: 'history',
   routes
 })
 router.beforeEach((to, from, next) => {
   NProgress.start()
+  console.log(to)
   const storage = JSON.parse(localStorage.getItem('vuex'))
   const token = Cookies.get('token')
-  if (token && storage && storage.menuNames && storage.menuNames.length) {
-    const menuNames = storage.menuNames
-    const menuPath = '/' + menuNames[0].replace(/\-/g, '/')
-    // 如果登录地址跳转到首页或者是重定向页面
-    if (to.path === '/login' && menuNames.length) {
-      next({
-        path: to.query.redirect || menuPath,
-        replace: true
-      })
+  if (storage && token) {
+    if (to.path === '/login') { // 跳转到首页
+      next()
       return
     }
-    if (menuNames && !menuNames.includes(to.meta.routeName)) {
-      next({
-        path: menuPath,
-        replace: true
-      })
-      return
-    }
-    next()
+    next({
+      path: to.query.redirect,
+      replace: true
+    })
     return
+  } else {
+    if (to.path === '/login') {
+      next()
+    } else {
+      next({ path: '/login' })
+    }
   }
-  next()
+  // if (token && storage && storage.menuNames && storage.menuNames.length) {
+  //   console.log(1111)
+  //   const menuNames = storage.menuNames
+  //   const menuPath = '/' + menuNames[0].replace(/\-/g, '/')
+  //   // 如果登录地址跳转到首页或者是重定向页面
+  //   if (to.path === '/login' && menuNames.length) {
+  //     next({
+  //       path: to.query.redirect || menuPath,
+  //       replace: true
+  //     })
+  //     return
+  //   }
+  //   if (menuNames && !menuNames.includes(to.meta.routeName)) {
+  //     next({
+  //       path: menuPath,
+  //       replace: true
+  //     })
+  //     return
+  //   }
+  //   next()
+  //   return
+  // } else {
+  //   if (to.path === '/login') {
+  //     next()
+  //   } else {
+  //     next({ path: '/login' })
+  //   }
+  // }
 })
 router.afterEach((to, from) => {
   NProgress.done()

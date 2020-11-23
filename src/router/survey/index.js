@@ -8,7 +8,7 @@
 const routes = [
   {
     path: '/layout',
-    name: '',
+    name: 'layout',
     component: () => import('@/views/layout'),
     children: [{
       path: '/survey',

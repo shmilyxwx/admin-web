@@ -70,7 +70,7 @@ const module = {
       Cookies.remove('token')
       setTimeout(() => {
         location.reload()
-      }, 500)
+      }, 3000)
     }
   }
 }

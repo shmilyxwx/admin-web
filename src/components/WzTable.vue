@@ -6,7 +6,7 @@
  * @Description: table表格组件
  -->
 <template>
-  <Card :dis-hover="disHover" :bordered="card" :padding="card?16:0" :title="card?title:''" style="width:100%" class="table-card">
+  <Card v-bind="$attrs" :dis-hover="disHover" :bordered="card" :padding="card?16:0" :title="card?title:''" style="width:100%" class="table-card">
     <div v-if="(handleBtns.length || batchBtns.length) && (isAction || showBtns)" slot="extra" class="btn">
       <!-- 操作按钮 -->
       <Button v-for="(item, index) in handleBtns" :key="index" :type="item.type || 'primary'" style="margin-left: 10px" @click="$emit('handle-click', item.btnType)">
@@ -67,7 +67,7 @@
 
 <script>
 export default {
-  name: 'WzTable',
+  name: 'wzTable',
   props: {
     card: {
       type: Boolean,
@@ -83,7 +83,8 @@ export default {
     },
     // 表格数据获取接口api方法
     dataApi: {
-      type: Function
+      type: Function,
+      default: () => console.log()
     },
     // 表格列的配置描述
     columns: {
@@ -177,7 +178,7 @@ export default {
         this.tableData = []
         this.loading = true
         if (JSON.stringify(params) === '{}') {
-          this.searchParams = { ...this.searchParams, ...this.$delFalseKey(params), ...this.pageParams }
+          this.searchParams = { ...this.searchParams, ...this.$commonJS.delFalseKey(params), ...this.pageParams }
         } else {
           this.searchParams = { ...this.$delFalseKey(params), ...this.pageParams }
         }

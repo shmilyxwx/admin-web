@@ -207,6 +207,8 @@ module.exports = {
     }],
     'array-bracket-spacing': [2, 'never'],
     'no-async-promise-executor': 0,
-    'require-default-prop':0
+    'require-default-prop':0,
+    'vue/no-parsing-error':[2, { 'x-invalid-end-tag': false }],
+    'vue/name-property-casing':0
   }
 }

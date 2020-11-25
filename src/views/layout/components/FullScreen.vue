@@ -33,19 +33,15 @@ export default {
     isFullscreen = Boolean(isFullscreen)
     document.addEventListener('fullscreenchange', () => {
       this.$emit('input', !this.value)
-      this.$emit('on-change', !this.value)
     })
     document.addEventListener('mozfullscreenchange', () => {
       this.$emit('input', !this.value)
-      this.$emit('on-change', !this.value)
     })
     document.addEventListener('webkitfullscreenchange', () => {
       this.$emit('input', !this.value)
-      this.$emit('on-change', !this.value)
     })
     document.addEventListener('msfullscreenchange', () => {
       this.$emit('input', !this.value)
-      this.$emit('on-change', !this.value)
     })
     this.$emit('input', isFullscreen)
   },

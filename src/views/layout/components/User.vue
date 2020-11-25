@@ -159,16 +159,13 @@ export default {
     async okPassword() {
       try {
         const validate = await this.$refs['form'].validate()
-        this.formData = { ...validate.data, ...{}}
+        this.formData = { ...validate.data }
         await editPassword(this.formData)
-        this.modalLoading = false
         this.showModal = false
-        this.$nextTick(() => {
-          this.modalLoading = true
-        })
         this.$Message.success('密码修改成功')
       } catch (error) {
         this.$Message.error(error.msg || '密码修改失败')
+      } finally {
         this.modalLoading = false
         this.$nextTick(() => {
           this.modalLoading = true
@@ -178,11 +175,8 @@ export default {
     // 确定退出
     async onLogOut() {
       this.out_loading = true
-      this.$store.commit('set_chatToken', [])
       this.$store.commit('set_menuNames', [])
       this.$store.commit('set_token', '')
-      this.$store.commit('set_chatIds', [])
-      this.$store.commit('set_chatMsgs', [])
       await this.$store.dispatch('onLogOut')
       this.$nextTick(() => {
         this.out_loading = false
@@ -193,14 +187,14 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.user{
+.user {
   cursor: pointer;
-  .name{
+  .name {
     color: #fff;
     margin: 0 5px;
   }
-  &-light{
-    .name{
+  &-light {
+    .name {
       color: #333;
     }
   }

@@ -26,7 +26,6 @@ const router = new VueRouter({
 })
 router.beforeEach((to, from, next) => {
   NProgress.start()
-  console.log(to)
   const storage = JSON.parse(localStorage.getItem('vuex'))
   const token = Cookies.get('token')
   if (storage && token) {

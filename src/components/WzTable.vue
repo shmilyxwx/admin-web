@@ -6,7 +6,7 @@
  * @Description: table表格组件
  -->
 <template>
-  <Card v-bind="$attrs" :dis-hover="disHover" :bordered="card" :padding="card?16:0" :title="card?title:''" style="width:100%" class="table-card">
+  <Card :dis-hover="disHover" :bordered="card" :padding="card?16:0" :title="card?title:''" style="width:100%" class="table-card">
     <div v-if="(handleBtns.length || batchBtns.length) && (isAction || showBtns)" slot="extra" class="btn">
       <!-- 操作按钮 -->
       <Button v-for="(item, index) in handleBtns" :key="index" :type="item.type || 'primary'" style="margin-left: 10px" @click="$emit('handle-click', item.btnType)">
@@ -47,6 +47,7 @@
       <!-- 分页 -->
       <div v-if="showPage" style="overflow: hidden">
         <Page
+          id="pageId"
           :current="pageParams['page']"
           :total="total"
           :disabled="!total"
@@ -60,6 +61,7 @@
           @on-change="changePage"
           @on-page-size-change="changePageSize"
         />
+        <Button type="primary" class="jump" size="small" @click="goElevatorPage('pageId')">跳转</Button>
       </div>
     </div>
   </Card>
@@ -177,11 +179,7 @@ export default {
       try {
         this.tableData = []
         this.loading = true
-        if (JSON.stringify(params) === '{}') {
-          this.searchParams = { ...this.searchParams, ...this.$commonJS.delFalseKey(params), ...this.pageParams }
-        } else {
-          this.searchParams = { ...this.$delFalseKey(params), ...this.pageParams }
-        }
+        this.searchParams = { ...this.$commonJS.delFalseKey(params), ...this.pageParams }
         const res = await this.dataApi(this.searchParams)
         this.tableData = res.data.data || res.data || []
         this.total = res.data.total || 0
@@ -211,7 +209,7 @@ export default {
     // 修改显示条数
     changePageSize(val) {
       this.pageParams['page_size'] = val
-      this.getData(this.searchParams)
+      this.getData()
     },
     // 获取分页的数据
     getPageSize() {
@@ -222,6 +220,28 @@ export default {
         return 'table-disabled-row'
       }
       return ''
+    },
+    goElevatorPage(pageId) {
+      let evtObj
+      const thisPage = document.getElementById(pageId)
+      const elevatorDiv = thisPage.getElementsByClassName('ivu-page-options-elevator')
+      if (elevatorDiv && elevatorDiv.length > 0) {
+        const pageInput = elevatorDiv[0].getElementsByTagName('input')[0]
+        if (window.KeyEvent) { // firefox 浏览器下模拟事件
+          evtObj = document.createEvent('KeyEvents')
+          evtObj.initKeyEvent('keyup', true, true, window, true, false, false, false, 13, 0)
+        } else { // chrome 浏览器下模拟事件
+          evtObj = document.createEvent('UIEvents')
+          evtObj.initUIEvent('keyup', true, true, window, 1)
+          delete evtObj.keyCode
+          if (typeof evtObj.keyCode === 'undefined') { // 为了模拟keycode
+            Object.defineProperty(evtObj, 'keyCode', { value: 13 })
+          } else {
+            evtObj.key = String.fromCharCode(13)
+          }
+        }
+        pageInput.dispatchEvent(evtObj)
+      }
     }
   }
 }
@@ -234,6 +254,12 @@ export default {
     margin: 20px 0 10px;
     overflow: hidden;
     float: right;
+    margin-right: 80px;
+  }
+  .jump{
+    position: absolute;
+    right: 0;
+    bottom: 14px;
   }
 }
 </style>

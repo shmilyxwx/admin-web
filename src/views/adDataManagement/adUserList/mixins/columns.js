@@ -5,9 +5,7 @@
  * @LastEditTime: 2020-07-03 14:57:09
  * @Description: 配置
  */
-import {
-  delChannelAdvertiser
-} from '@/request/api'
+import { delChannelAdvertiser } from '@/request/api'
 const type = {
   1: '浪呀',
   4: '鸡冻',

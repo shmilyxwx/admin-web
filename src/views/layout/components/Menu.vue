@@ -42,7 +42,6 @@ export default {
       const res = await this.getMenuData()
       this.routes = res.data
       this.$emit('get-menus', true)
-      console.log(this.routes)
     },
     // 点击选中菜单
     onSelect(name) {

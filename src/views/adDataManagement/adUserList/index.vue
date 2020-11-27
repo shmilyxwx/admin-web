@@ -28,20 +28,19 @@ export default {
     return {
       dataApi: getAdvertiserList,
       type: null,
-      roleData: [],
       apiParams: {},
       loading: true,
       editModel: false
     }
   },
   mounted() {
-    this.getData()
+    this.getData({ a: '111' })
   },
 
   methods: {
     // 获取数据
-    async getData() {
-      await this.$refs['table'].getData(this.apiParams)
+    async getData(params = {}) {
+      await this.$refs['table'].getData({ ...this.apiParams, ...params })
     },
     // 重置密码
     async restPwd(row) {

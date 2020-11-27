@@ -31,16 +31,26 @@ class Common {
     return res
   }
   // 删除为空的字段
-  delFalseKey(formatData) {
-    const data = {}
-    for (const key in formatData) {
-      if ((formatData[key] !== '-111') && (formatData[key] !== 0 && formatData[key])) {
-        if ((formatData[key] && typeof formatData[key] !== 'object') || (typeof formatData[key] === 'object' && formatData[key][0])) {
-          data[key] = formatData[key]
-        }
+  compactObj(obj) {
+    for (var i in obj) {
+      if (typeof obj[i] === 'object') {
+        this.compactObj(obj[i])
+      }
+      if (this.isEmpty(obj[i])) {
+        delete obj[i]
       }
     }
-    return data
+    return obj
+  }
+  isEmpty(foo) {
+    if (typeof foo === 'object') {
+      for (var i in foo) {
+        return false
+      }
+      return true
+    } else {
+      return foo === '' || foo === null || foo === undefined || foo === false || foo === '111'
+    }
   }
   // 数据平铺
   treeToArray(tree) {

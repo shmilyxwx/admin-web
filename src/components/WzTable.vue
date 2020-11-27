@@ -179,7 +179,7 @@ export default {
       try {
         this.tableData = []
         this.loading = true
-        this.searchParams = { ...this.$commonJS.delFalseKey(params), ...this.pageParams }
+        this.searchParams = { ...this.$commonJS.compactObj(params), ...this.pageParams }
         const res = await this.dataApi(this.searchParams)
         this.tableData = res.data.data || res.data || []
         this.total = res.data.total || 0

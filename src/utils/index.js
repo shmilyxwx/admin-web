@@ -22,6 +22,14 @@ class Common {
     })
     return res
   }
+  // 序列化树label和value(对象转数组对象)
+  converLabel(obj) {
+    const res = []
+    for (const key in obj) {
+      res.push({ value: key, label: obj[key] })
+    }
+    return res
+  }
   // 删除为空的字段
   delFalseKey(formatData) {
     const data = {}

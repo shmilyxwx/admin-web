@@ -183,12 +183,12 @@ export default {
         const res = await this.dataApi(this.searchParams)
         this.tableData = res.data.data || res.data || []
         this.total = res.data.total || 0
-        this.loading = false
         this.$nextTick(() => {
           this.getPageSize()
         })
       } catch (error) {
         this.$Message.error(error.msg || '获取数据失败')
+      } finally {
         this.loading = false
       }
     },
@@ -209,7 +209,7 @@ export default {
     // 修改显示条数
     changePageSize(val) {
       this.pageParams['page_size'] = val
-      this.getData()
+      this.getData(this.searchParams)
     },
     // 获取分页的数据
     getPageSize() {
@@ -221,6 +221,7 @@ export default {
       }
       return ''
     },
+    // 分页跳转
     goElevatorPage(pageId) {
       let evtObj
       const thisPage = document.getElementById(pageId)

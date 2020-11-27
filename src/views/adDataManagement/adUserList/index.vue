@@ -43,10 +43,9 @@ export default {
     async getData() {
       await this.$refs['table'].getData(this.apiParams)
     },
-    // 删除
+    // 重置密码
     async restPwd(row) {
       const res = await putChannelAdvertiser({ id: row.id, reset: 1 })
-      console.log(res)
       this.$Notice.success({
         title: '密码重置成功',
         desc: row.source_type + '新密码为' + res.data,
@@ -56,7 +55,6 @@ export default {
     },
     // 按钮点击事件
     handleClick(type, row = {}) {
-      this.formObj = { ...row }
       switch (type) {
         case 'add': // 添加
           this.editModel = true
@@ -73,21 +71,17 @@ export default {
           ...validate.data
         }
         const res = await postChannelAdvertiser(this.formData)
-        this.loading = false
-        this.$nextTick(() => {
-          this.loading = true
-          this.editModel = false
-        })
+        this.editModel = false
         this.$Notice.success({
           title: '创建成功',
           desc: res.data.username + '新密码为' + res.data.password,
           duration: 0
         })
-        this.getData()
-        this.$Message.success('操作成功')
+        this.$refs['table'].filterData()
       } catch (error) {
-        this.loading = false
         this.$Message.error(error.msg || '操作失败')
+      } finally {
+        this.loading = false
         this.$nextTick(() => {
           this.loading = true
         })

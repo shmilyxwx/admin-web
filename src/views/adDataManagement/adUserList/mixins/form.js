@@ -36,16 +36,15 @@ export default {
             {
               key: 'note',
               label: '渠道名称',
-              editDisabled: true,
               rules: {
                 required: true,
                 message: '请输入渠道名称',
                 trigger: 'blur'
               }
-            }, {
+            },
+            {
               key: 'source_type',
               label: '渠道编号',
-              editDisabled: true,
               rules: {
                 required: true,
                 message: '请输入渠道编号',
@@ -68,20 +67,6 @@ export default {
   },
   async created() {
     const res = await getChannelAPPType()
-    const arr = []
-    for (const key in res.data) {
-      const obj = {
-        value: key,
-        label: res.data[key]
-      }
-      arr.push(obj)
-    }
-    this.appType = arr
-  },
-  methods: {
-    // 修改form组件值
-    changeValue(key, value) {
-      this.$refs['form'].changeValue(key, value)
-    }
+    this.appType = this.$commonJS.converLabel(res.data)
   }
 }

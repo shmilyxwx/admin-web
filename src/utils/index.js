@@ -49,7 +49,7 @@ class Common {
       }
       return true
     } else {
-      return foo === '' || foo === null || foo === undefined || foo === false || foo === '111'
+      return foo === '' || foo === null || foo === undefined || foo === false || foo === '-111'
     }
   }
   // 数据平铺

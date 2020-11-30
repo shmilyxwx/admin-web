@@ -99,7 +99,7 @@ export default {
   },
   data() {
     return {
-      formData: { ...{}, ...this.searchParams }
+      formData: { ...this.searchParams }
     }
   },
   methods: {
@@ -109,18 +109,12 @@ export default {
     },
     // 重置表单
     onReset() {
-      this.formData = { ...{}, ...this.searchParams }
-      this.$emit('handle-filter', { ...this.formData }, 'reset')
+      this.formData = { ...this.searchParams }
+      this.$emit('handle-filter', this.$commonJS.compactObj(this.formData), 'reset')
     },
     // 搜索
     handleFilter() {
-      const data = {}
-      for (const key in this.formData) {
-        if ((Array.isArray(this.formData[key]) && this.formData[key][0]) || (!Array.isArray(this.formData[key]) && String(this.formData[key]) !== 'null')) {
-          data[key] = this.formData[key]
-        }
-      }
-      this.$emit('handle-filter', data)
+      this.$emit('handle-filter', this.$commonJS.compactObj(this.formData))
     }
   }
 }

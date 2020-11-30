@@ -44,16 +44,12 @@ export default {
   },
   methods: {
     // 获取数据
-    async getData() {
-      await this.$refs['table'].getData(this.apiParams)
+    async getData(params = {}) {
+      await this.$refs['table'].getData({ ...this.apiParams, ...params })
     },
     // 搜索
     handleFilter(params) {
-      this.apiParams = {
-        ...this.apiParams,
-        ...params
-      }
-      this.$refs['table'].filterData(this.apiParams)
+      this.$refs['table'].filterData({ ...this.apiParams, ...params })
     },
     // 获取角色列表
     async getRoleData() {

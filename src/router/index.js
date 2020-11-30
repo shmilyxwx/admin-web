@@ -30,13 +30,10 @@ router.beforeEach((to, from, next) => {
   const token = Cookies.get('token')
   if (storage && token) {
     if (to.path === '/login') { // 跳转到首页
-      next()
+      next({ name: 'survey', replace: true })
       return
     }
-    next({
-      path: to.query.redirect,
-      replace: true
-    })
+    next({ path: to.query.redirect, replace: true })
     return
   } else {
     if (to.path === '/login') {

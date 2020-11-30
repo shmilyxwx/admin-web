@@ -109,8 +109,8 @@ export default {
     },
     // 重置表单
     onReset() {
-      this.formData = { ...this.searchParams }
-      this.$emit('handle-filter', this.$commonJS.compactObj(this.formData), 'reset')
+      this.formData = { ...{}, ...this.searchParams }
+      this.$emit('handle-filter', this.$commonJS.compactObj({ ...{}, ...this.formData }), 'reset')
     },
     // 搜索
     handleFilter() {

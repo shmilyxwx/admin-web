@@ -35,7 +35,8 @@ export default {
       editModel: false,
       type: null,
       roleData: [],
-      apiParams: {}
+      apiParams: {},
+      parentSearch: {}
     }
   },
   mounted() {
@@ -48,7 +49,8 @@ export default {
       await this.$refs['table'].getData({ ...this.apiParams, ...params })
     },
     // 搜索
-    handleFilter(params) {
+    handleFilter(params, type) {
+      this.parentSearch = { ...this.apiParams, ...params }
       this.$refs['table'].filterData({ ...this.apiParams, ...params })
     },
     // 获取角色列表
@@ -118,7 +120,7 @@ export default {
           this.loading = true
           this.editModel = false
         })
-        this.getData()
+        this.$refs['table'].filterData(this.parentSearch)
       } catch (error) {
         this.loading = false
         this.$Message.error(error.msg || '操作失败')
